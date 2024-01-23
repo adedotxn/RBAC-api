@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 import {
   Controller,
   Get,
@@ -6,11 +7,15 @@ import {
   Param,
   Delete,
   ValidationPipe,
+  UseInterceptors,
+  UploadedFile,
+  ParseIntPipe,
 } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { LoginUserDto } from './dto/login-user.dto';
 import { ImageUploadDto } from './dto/image-upload.dto';
+import { FileInterceptor } from '@nestjs/platform-express';
 
 @Controller('users')
 export class UsersController {
@@ -28,12 +33,24 @@ export class UsersController {
 
   // TODO : Secure endpoint to not run unless logged in
   @Post(':id/upload')
+  @UseInterceptors(FileInterceptor('file'))
   uploadImage(
-    @Param('id') id: string,
+    @Param('id', ParseIntPipe) id: number,
     @Body(ValidationPipe) imageUploadDto: ImageUploadDto,
+    @UploadedFile() file: Express.Multer.File
   ) {
-    return this.usersService.uploadImage(id, imageUploadDto);
+    // console.log("file", file)
+    return this.usersService.uploadImage(id, file, imageUploadDto);
   }
+
+
+  // @Get(':id/uploads')
+  // imageUploads(
+  //   @Param('id') id: string,
+  //   @Body(ValidationPipe) imageUploadDto: ImageUploadDto,
+  // ) {
+  //   return this.usersService.uploadImage(id, imageUploadDto);
+  // }
 
   // TODO : Secure endpoint to not run unless logged in
   @Get()

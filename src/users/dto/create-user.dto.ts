@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 import { IsEmail, IsEnum, IsInt, IsNotEmpty, IsString } from 'class-validator';
 
 export class CreateUserDto {
@@ -11,19 +12,20 @@ export class CreateUserDto {
 
   @IsString()
   @IsNotEmpty()
-  company_name: string;
+  companyName: string;
 
   @IsInt()
-  no_of_users: number;
+  numberOfUsers: number = 0;
 
   @IsInt()
-  no_of_products: number;
+  numberOfProducts: number = 0;
 
   @IsInt()
-  percentage: number;
+  percentage: number = 0;
 
   @IsEnum(['Admin', 'Customer'], {
     message: 'Role must either be Customer or Admin',
   })
   role: 'Admin' | 'Customer';
 }
+

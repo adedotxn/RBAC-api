@@ -1,17 +1,10 @@
-import { IsNotEmpty, IsString } from 'class-validator';
+// import { IsInt, IsNotEmpty, IsString } from 'class-validator';
 
 export class ImageUploadDto {
-  @IsString()
-  @IsNotEmpty()
-  userIdUploadingTo: string;
-
-  @IsString()
-  @IsNotEmpty()
-  imageUrl: string;
-
-  @IsString()
+  // @IsString()
   imageDescription: string;
 
-  @IsString()
-  uploadedAt: string;
+  // @IsInt()
+  // @IsNotEmpty()
+  targetUserId: number;
 }

@@ -1,0 +1,36 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum Role {
+  Admin
+  Customer
+}
+
+model User {
+  id               Int    @unique @default(autoincrement())
+  email            String @unique
+  companyName      String
+  numberOfUsers    Int
+  numberOfProducts Int
+  percentage       Int
+  role             Role
+
+  images ImageUpload[]
+}
+
+model ImageUpload {
+  id               String @unique @default(cuid())
+  imageUrl         String
+  imageDescription String
+
+  User         User @relation(fields: [targetUserId], references: [id])
+  targetUserId Int
+
+  uploadedAt DateTime @default(now())
+}
