@@ -13,24 +13,39 @@ enum Role {
 }
 
 model User {
-  id               Int    @unique @default(autoincrement())
-  email            String @unique
+  id    Int    @id @default(autoincrement())
+  email String @unique
+  role  Role
+
+  Input Input[]
+
+  acccountImages ImageUpload[] @relation("customerAccountImages")
+  imageUploaded  ImageUpload[] @relation("uploadedImages")
+}
+
+model Input {
+  id Int @id @default(autoincrement())
+
+  User   User @relation(fields: [userId], references: [id], onUpdate: Cascade, onDelete: Cascade)
+  userId Int
+
   companyName      String
   numberOfUsers    Int
   numberOfProducts Int
   percentage       Int
-  role             Role
-
-  images ImageUpload[]
+  createdAt        DateTime @default(now())
 }
 
 model ImageUpload {
-  id               String @unique @default(cuid())
+  id               String @id @default(cuid())
   imageUrl         String
   imageDescription String
 
-  User         User @relation(fields: [targetUserId], references: [id])
-  targetUserId Int
+  User                 User @relation("customerAccountImages", fields: [targetCustomerUserId], references: [id], onUpdate: Cascade, onDelete: Cascade)
+  targetCustomerUserId Int
+
+  Uploader            User @relation("uploadedImages", fields: [uploaderAdminUserId], references: [id], onUpdate: Cascade, onDelete: Cascade)
+  uploaderAdminUserId Int
 
   uploadedAt DateTime @default(now())
 }
