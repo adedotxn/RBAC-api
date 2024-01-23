@@ -6,6 +6,7 @@ import { ImageUploadDto } from './dto/image-upload.dto';
 import * as firebase from 'firebase-admin';
 import { DatabaseService } from 'src/database/database.service';
 import { InputDataDto } from './dto/input-data.dto';
+import * as bcrypt from 'bcrypt'
 
 
 @Injectable()
@@ -31,14 +32,17 @@ export class UsersService {
     const { email, password, ...rest } = createUserDto
     try {
 
+      const hashedPassword = await bcrypt.hash(password, parseInt(process.env.SALT_ROUNDS));
+
       const response = await this.firebaseService.auth().createUser({
-        email, password,
+        email, password: hashedPassword,
       })
 
       if (response.uid) {
         const response = await this.databaseService.user.create({
           data: {
             email,
+            password: hashedPassword,
             ...rest
           }
         })
@@ -55,7 +59,29 @@ export class UsersService {
     }
   }
 
-  login(loginUserDto: LoginUserDto) {
+  async login(loginUserDto: LoginUserDto) {
+    const { email, password } = loginUserDto;
+    try {
+      const userRecord = await this.firebaseService.auth().getUserByEmail(email);
+
+      if (userRecord.uid) {
+        const user = await this.databaseService.user.findFirst({
+          where: {
+            email: userRecord.email,
+          }
+        })
+
+        const passwordValid = await bcrypt.compare(password, user.password)
+
+        if (!user || !passwordValid) throw new UnauthorizedException("Incorrect Credentials")
+
+        return user
+      }
+
+
+    } catch (error) {
+      throw new InternalServerErrorException()
+    }
     return loginUserDto;
   }
 
