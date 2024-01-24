@@ -2,6 +2,10 @@
 /dist
 /node_modules
 
+.env
+*.env
+.env.local
+
 # Logs
 logs
 *.log
@@ -37,6 +41,3 @@ lerna-debug.log*
 
 /src/firebase/firebase_service_account.json
 /src/firebase/preAuth.middleware.ts
-
-
-.env
