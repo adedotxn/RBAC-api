@@ -20,8 +20,8 @@ model User {
 
   Input Input[]
 
-  acccountImages ImageUpload[] @relation("customerAccountImages")
-  imageUploaded  ImageUpload[] @relation("uploadedImages")
+  acccountImages Image[] @relation("customerAccountImages")
+  imageUploaded  Image[] @relation("uploadedImages")
 }
 
 model Input {
@@ -37,7 +37,7 @@ model Input {
   createdAt        DateTime @default(now())
 }
 
-model ImageUpload {
+model Image {
   id               String @id @default(cuid())
   imageUrl         String
   imageDescription String

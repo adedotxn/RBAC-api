@@ -1,18 +1,16 @@
-/* eslint-disable prettier/prettier */
-import { IsEmail, IsEnum, IsNotEmpty, IsString } from 'class-validator';
+import { IsEmail, IsEnum, IsNotEmpty, IsString } from 'class-validator'
 
 export class SignupDto {
   @IsEmail()
   @IsNotEmpty()
-  email: string;
+  email: string
 
   @IsString()
   @IsNotEmpty()
-  password: string;
+  password: string
 
   @IsEnum(['Admin', 'Customer'], {
     message: 'Role must either be Customer or Admin',
   })
-  role: 'Admin' | 'Customer';
+  role: 'Admin' | 'Customer'
 }
-

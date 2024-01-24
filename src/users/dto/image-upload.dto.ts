@@ -1,7 +1,7 @@
 // import { IsInt, IsNotEmpty, IsString } from 'class-validator';
 
 export class ImageUploadDto {
-  imageDescription: string;
+  imageDescription: string
 
-  targetUserId: number;
+  targetUserId: number
 }

@@ -1,5 +1,5 @@
-import { NestFactory } from '@nestjs/core';
-import { AppModule } from './app.module';
+import { NestFactory } from '@nestjs/core'
+import { AppModule } from './app.module'
 // import { ConfigService } from '@nestjs/config';
 
 // // Import firebase-admin
@@ -20,7 +20,7 @@ import { AppModule } from './app.module';
 // }
 
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule);
+  const app = await NestFactory.create(AppModule)
 
   // const configService: ConfigService = app.get(ConfigService);
 
@@ -40,7 +40,7 @@ async function bootstrap() {
   //   storageBucket: `${firebaseConfig.projectId}.appspot.com`,
   // });
 
-  await app.listen(3000);
+  await app.listen(3000)
 }
 // export default admin;
-bootstrap();
+bootstrap()
