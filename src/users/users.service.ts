@@ -1,12 +1,10 @@
 /* eslint-disable prettier/prettier */
-import { ConflictException, Inject, Injectable, InternalServerErrorException, NotFoundException, UnauthorizedException } from '@nestjs/common';
+import { Inject, Injectable, InternalServerErrorException, NotFoundException, UnauthorizedException } from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
-import { LoginUserDto } from './dto/login-user.dto';
 import { ImageUploadDto } from './dto/image-upload.dto';
 import * as firebase from 'firebase-admin';
 import { DatabaseService } from 'src/database/database.service';
 import { InputDataDto } from './dto/input-data.dto';
-import * as bcrypt from 'bcrypt'
 
 
 @Injectable()
@@ -29,61 +27,22 @@ export class UsersService {
 
 
   async create(createUserDto: CreateUserDto) {
-    const { email, password, ...rest } = createUserDto
+    const { email, password, ...rest } = createUserDto;
+
     try {
-
-      const hashedPassword = await bcrypt.hash(password, parseInt(process.env.SALT_ROUNDS));
-
-      const response = await this.firebaseService.auth().createUser({
-        email, password: hashedPassword,
+      const response = await this.databaseService.user.create({
+        data: {
+          email,
+          password,
+          ...rest
+        }
       })
-
-      if (response.uid) {
-        const response = await this.databaseService.user.create({
-          data: {
-            email,
-            password: hashedPassword,
-            ...rest
-          }
-        })
-
-        return { message: "User account created", data: response }
-      }
+      return { message: "User account created", data: response }
     } catch (error) {
-      if (error.errorInfo && error.errorInfo.code === 'auth/email-already-exists') {
-        throw new ConflictException('User with this email already exists. Try another')
-      }
-      console.log(error)
-
       throw new InternalServerErrorException(`An unexpected error occured`)
     }
   }
 
-  async login(loginUserDto: LoginUserDto) {
-    const { email, password } = loginUserDto;
-    try {
-      const userRecord = await this.firebaseService.auth().getUserByEmail(email);
-
-      if (userRecord.uid) {
-        const user = await this.databaseService.user.findFirst({
-          where: {
-            email: userRecord.email,
-          }
-        })
-
-        const passwordValid = await bcrypt.compare(password, user.password)
-
-        if (!user || !passwordValid) throw new UnauthorizedException("Incorrect Credentials")
-
-        return user
-      }
-
-
-    } catch (error) {
-      throw new InternalServerErrorException()
-    }
-    return loginUserDto;
-  }
 
   async input(id: number, inputDataDto: InputDataDto) {
     const user = Boolean(await this.userExists(id));
@@ -186,8 +145,8 @@ export class UsersService {
     return this.databaseService.user.findMany();
   }
 
-  findOne(id: number) {
-    return this.databaseService.user.findUnique({ where: { id } });
+  findOne(email: string) {
+    return this.databaseService.user.findUnique({ where: { email } });
   }
 
   remove(id: number) {

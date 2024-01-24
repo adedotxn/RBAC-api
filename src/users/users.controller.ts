@@ -12,8 +12,6 @@ import {
   Query,
 } from '@nestjs/common';
 import { UsersService } from './users.service';
-import { CreateUserDto } from './dto/create-user.dto';
-import { LoginUserDto } from './dto/login-user.dto';
 import { ImageUploadDto } from './dto/image-upload.dto';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { InputDataDto } from './dto/input-data.dto';
@@ -22,25 +20,15 @@ import { InputDataDto } from './dto/input-data.dto';
 export class UsersController {
   constructor(private readonly usersService: UsersService) { }
 
-  @Post()
-  create(@Body(ValidationPipe) createUserDto: CreateUserDto) {
-    return this.usersService.create(createUserDto);
-  }
-
   @Get()
   findAll(@Query('role') role?: 'Admin' | 'Customer') {
     return this.usersService.findAll(role);
   }
 
   // TODO : Secure endpoint to not run unless logged in
-  @Get(':id')
-  findOne(@Param('id', ParseIntPipe) id: number) {
-    return this.usersService.findOne(id);
-  }
-
-  @Post('login')
-  login(@Body(ValidationPipe) loginUserDto: LoginUserDto) {
-    return this.usersService.login(loginUserDto);
+  @Get(':email')
+  findOne(@Param('email') email: string) {
+    return this.usersService.findOne(email);
   }
 
   @Post(':id/input')
