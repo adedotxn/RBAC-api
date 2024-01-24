@@ -17,7 +17,7 @@ import { InputDataDto } from './dto/input-data.dto'
 
 @Controller('users')
 export class UsersController {
-  constructor(private readonly usersService: UsersService) {}
+  constructor(private readonly usersService: UsersService) { }
 
   @Get()
   findAll(@Query('role') role?: 'Admin' | 'Customer') {
@@ -62,7 +62,10 @@ export class UsersController {
     return this.usersService.uploadImage(id, file, imageUploadDto)
   }
 
-  @Get(':id/images')
+  /**Get images uploaded to "Customer" account
+   * Restricted to users with "Customer" role
+   */
+  @Get(':id/uploads')
   getImages(@Param('id', ParseIntPipe) id: number) {
     return this.usersService.getImages(id)
   }

@@ -3,5 +3,5 @@
 export class ImageUploadDto {
   imageDescription: string
 
-  targetUserId: number
+  targetCustomerUserId: number
 }

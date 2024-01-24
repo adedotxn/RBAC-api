@@ -20,4 +20,4 @@ import { FirebaseModule } from 'src/firebase/firebase.module'
   providers: [AuthService],
   exports: [AuthService],
 })
-export class AuthModule {}
+export class AuthModule { }

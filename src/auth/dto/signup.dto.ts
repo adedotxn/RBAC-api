@@ -12,5 +12,6 @@ export class SignupDto {
   @IsEnum(['Admin', 'Customer'], {
     message: 'Role must either be Customer or Admin',
   })
+  @IsNotEmpty()
   role: 'Admin' | 'Customer'
 }
