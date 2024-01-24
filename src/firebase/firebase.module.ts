@@ -35,4 +35,4 @@ import { ConfigModule, ConfigService } from '@nestjs/config'
   ],
   exports: ['FIREBASE_ADMIN'],
 })
-export class FirebaseModule { }
+export class FirebaseModule {}

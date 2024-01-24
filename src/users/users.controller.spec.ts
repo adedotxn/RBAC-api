@@ -18,7 +18,7 @@ const mockFirebaseService = {
   }),
 }
 
-class MockDatabaseService extends DatabaseService { }
+class MockDatabaseService extends DatabaseService {}
 
 describe('UsersController', () => {
   let controller: UsersController

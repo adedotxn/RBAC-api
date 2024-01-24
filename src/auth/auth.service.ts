@@ -19,7 +19,7 @@ export class AuthService {
     private readonly firebaseService: firebase.app.App,
     private usersService: UsersService,
     private jwtService: JwtService
-  ) { }
+  ) {}
 
   async signUp(signupDto: SignupDto) {
     const { email, password } = signupDto

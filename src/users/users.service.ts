@@ -18,7 +18,7 @@ export class UsersService {
     @Inject('FIREBASE_ADMIN')
     private readonly firebaseService: firebase.app.App,
     private readonly databaseService: DatabaseService
-  ) { }
+  ) {}
 
   protected async userExists(id: number) {
     return await this.databaseService.user.findUnique({

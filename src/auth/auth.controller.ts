@@ -13,7 +13,7 @@ import { SkipAuth } from './auth.decorator'
 
 @Controller('auth')
 export class AuthController {
-  constructor(private authService: AuthService) { }
+  constructor(private authService: AuthService) {}
 
   @SkipAuth()
   @Post('signup')
