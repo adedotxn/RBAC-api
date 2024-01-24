@@ -31,6 +31,7 @@ export class UsersController {
     return this.usersService.findOne(email);
   }
 
+  // POST data inputs
   @Post(':id/input')
   input(
     @Param('id', ParseIntPipe) id: number,
@@ -40,6 +41,7 @@ export class UsersController {
   }
 
 
+  // Get recent data inputs of users with "customer" role
   @Get(':id/inputs/:customerId')
   recentInputS(
     @Param('id', ParseIntPipe) id: number,
@@ -50,6 +52,9 @@ export class UsersController {
 
 
   // TODO : Secure endpoint to not run unless logged in
+
+  /* Upload Images to a "Customer" role user's account
+   * restricted only to users with "Admin" role */
   @Post(':id/upload')
   @UseInterceptors(FileInterceptor('file'))
   uploadImage(
